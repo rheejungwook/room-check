@@ -171,7 +171,7 @@ function home(){
   [...fl].reverse().forEach(f=>{const s=stat(inF(f)),mine=S.mine.includes(f);
     h+=`<button class="card floor ${s.p===100?'done':''} ${f===nf?'next':''}" data-a="floor" data-f="${f}"><span class="n">${f}층</span><span class="m"><small>${s.d}/${s.t}실 · ${s.p}%${mine?'<span class="tag">담당</span>':''}${f===nf?'<span class="tag">여기부터</span>':''}${s.p===100?' ✔':''}</small><div class="mini"><i style="width:${s.p}%"></i></div></span></button>`});
   h+=`<button class="ghost" data-a="addFloor">＋ 층 추가</button></div>
-  <div class="dock"><div><button class="big xl" data-a="export"><span>📤 점검표 엑셀 내보내기 · 공유</span><small>O ${S.rooms.filter(r=>r.st==='O').length}실 · 진행 ${all.p}%</small></button></div></div>`;
+  <div class="dock"><div><button class="big xl" data-a="export"><span>📤 공유하기 (사내 메신저 선택)</span><small>O ${S.rooms.filter(r=>r.st==='O').length}실 · 진행 ${all.p}%</small></button></div></div>`;
   return h;
 }
 
@@ -377,21 +377,16 @@ function exportX(){
   const all=stat(S.rooms),ym=S.ym||today().slice(0,7),mm=parseInt(ym.slice(5,7));
   const defName=`회의실_${mm}월_${S.site}`,blob=buildXlsx();
   const curName=()=>{const fe=document.getElementById('fname');let n=((fe&&fe.value)||defName).replace(/[\\\/:*?"<>|]/g,'').replace(/\.xlsx$/i,'').trim()||defName;return n+'.xlsx'};
-  const mkFile=()=>new File([blob],curName(),{type:blob.type});
   const dl=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=curName();document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);toast('파일을 저장했어요')};
-  let can=false;try{can=!!(navigator.canShare&&navigator.canShare({files:[new File([blob],defName+'.xlsx',{type:blob.type})]}))}catch(e){can=false}
   const okN=S.rooms.filter(r=>r.st==='O').length;
   const pct=all.t?(okN/all.t*100).toFixed(1):'0.0';
   sheet(`<h2>내보내기 · 공유</h2><div class="final" style="padding:10px"><b style="font-size:38px">${pct}%</b>점검 완료율 (O ${okN}실 / 전체 ${all.t}실)</div>
    <div class="note">점검 진행(O+X): ${all.p}%${all.p<100?` · 아직 ${all.t-all.d}실 미확인 (그대로 보내도 취합 때 이어서 합칠 수 있어요)`:''}</div>
    <label>파일 이름 (.xlsx는 자동으로 붙어요)</label><input type="text" id="fname" value="${esc(defName)}">
-   ${can?`<button class="btn pri" id="shbtn" style="height:72px;font-size:21px">📤 공유하기 (사내 메신저 선택)</button><div class="note">누르면 휴대폰 공유창이 열려요. 사내 메신저를 골라 바로 전송하세요. 파일 저장은 필요 없어요.</div>`
-     :`<div class="note">이 기기·브라우저는 공유창을 지원하지 않아요. 엑셀 파일을 받은 뒤 메신저에 첨부해 주세요.</div><button class="btn pri" id="dlbtn" style="height:72px;font-size:21px">📥 엑셀 파일 받기</button>`}
+   <button class="btn pri" id="dlbtn" style="height:72px;font-size:21px">📤 공유하기 (사내 메신저 선택)</button>
    <button class="btn" onclick="closeLayer()">닫기</button>`);
-  const db=document.getElementById('dlbtn');if(db)db.onclick=dl;
-  const sb=document.getElementById('shbtn');if(sb)sb.onclick=()=>{const fl=mkFile();navigator.share({files:[fl],title:fl.name,text:`${fl.name} · 점검 완료율 ${pct}% (O ${okN}/${all.t}실)`}).catch(e=>{if(!e||e.name!=='AbortError'){toast('공유가 안 돼서 파일로 저장해요');dl()}})};
+  document.getElementById('dlbtn').onclick=dl;
 }
-
 /* ---------- XLSX 읽기 + 취합 ---------- */
 async function inflate(u8){const ds=new DecompressionStream('deflate-raw');const w=ds.writable.getWriter();w.write(u8);w.close();return new Uint8Array(await new Response(ds.readable).arrayBuffer())}
 async function unzip(buf){
