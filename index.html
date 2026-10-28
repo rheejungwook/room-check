@@ -120,7 +120,32 @@ input,select{font:inherit}
 @keyframes sheetDown{to{transform:translateY(100%)}}
 @keyframes rise{from{opacity:0;transform:translateY(14px)}}
 @keyframes ghostOut{to{opacity:0;transform:translateY(-10px)}}
-@media (prefers-reduced-motion:reduce){.sheet>div{animation-duration:.3s}.sheet>div>*:not(.ghost){animation-duration:.25s}}.norep.ok2{background:var(--ink);color:#fff;border-color:var(--ink);box-shadow:0 4px 0 #5F5F5F}.norep.ok2 small{color:var(--lime)}.norep.ok2:active{background:#2a2a2a;transform:translateY(4px);box-shadow:0 0 0 #5F5F5F}.norep.ok2.ok{background:var(--lime);color:var(--ink);border-color:var(--ink);box-shadow:none}.norep.flip{animation:flipin .35s cubic-bezier(.34,1.4,.64,1)}@keyframes flipin{0%{transform:scale(.94)}100%{transform:scale(1)}}</style>
+@media (prefers-reduced-motion:reduce){.sheet>div{animation-duration:.3s}.sheet>div>*:not(.ghost){animation-duration:.25s}}.norep.ok2{background:var(--ink);color:#fff;border-color:var(--ink);box-shadow:0 4px 0 #5F5F5F}.norep.ok2 small{color:var(--lime)}.norep.ok2:active{background:#2a2a2a;transform:translateY(4px);box-shadow:0 0 0 #5F5F5F}.norep.ok2.ok{background:var(--lime);color:var(--ink);border-color:var(--ink);box-shadow:none}.norep.flip{animation:flipin .35s cubic-bezier(.34,1.4,.64,1)}@keyframes flipin{0%{transform:scale(.94)}100%{transform:scale(1)}}.stp{display:flex;gap:6px;margin-top:8px}.stp i{flex:1;height:5px;border-radius:99px;background:#3a3a3a;transition:background .4s}.stp i.on{background:var(--lime)}
+.ob{animation:obIn .5s cubic-bezier(.34,1.2,.64,1) backwards}.ob.back{animation-name:obBack}
+@keyframes obIn{from{opacity:0;transform:translateX(32px)}}@keyframes obBack{from{opacity:0;transform:translateX(-32px)}}
+.ob-k{font-size:15px;font-weight:700;color:var(--g6);margin-top:6px}
+.ob-t{font-size:24px;margin:4px 0 14px}
+.ob-l{display:block;font-size:15px;color:var(--g6);margin:14px 0 6px}
+.ob-in{width:100%;height:54px;border-radius:14px;border:2px solid var(--line);padding:0 14px;background:#fff;font-size:17px}
+.sitelist{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+.card.site{display:flex;align-items:center;gap:10px;width:100%;min-height:68px;padding:12px 16px;margin:0;text-align:left;border:2px solid transparent;transition:transform .15s,background .25s,border-color .25s,color .25s}
+.card.site .sn2{font-size:21px;font-weight:700;flex:1}
+.card.site small{font-size:13px;color:var(--g6)}
+.card.site.on{border-color:var(--ink)}
+.card.site.pick{background:var(--ink);color:#fff;transform:scale(.98);border-color:var(--ink)}.card.site.pick small{color:#ccc}
+.card.site:active{transform:scale(.98)}.stk{margin-left:auto;font-size:15px;font-weight:700;color:var(--g6)}.sheet .sitelist{display:flex;flex-direction:column;gap:8px;margin-top:12px}.sheet .card.site{min-height:56px;padding:8px 14px;background:var(--bg)}.sheet .card.site .sn2{font-size:19px}.sheet .card.site.on{border-color:var(--ink);background:#fff}.sheet .card.site.pick{background:var(--ink);color:#fff}.sheet .card.site .chev{flex:none}.sheet>div.morph>*:not(.ghost){animation:slideIn .42s cubic-bezier(.22,1,.36,1) .12s backwards!important}
+.sheet>div.morph.back>*:not(.ghost){animation-name:slideInBack!important}
+.sheet>div.morph .ghost{animation:ghostLeft .26s cubic-bezier(.4,0,1,1) forwards}
+.sheet>div.morph.back .ghost{animation-name:ghostRight}
+@keyframes slideIn{from{opacity:0;transform:translateX(34px)}}
+@keyframes slideInBack{from{opacity:0;transform:translateX(-34px)}}
+@keyframes ghostLeft{to{opacity:0;transform:translateX(-34px)}}
+@keyframes ghostRight{to{opacity:0;transform:translateX(34px)}}#app{transition:transform .45s cubic-bezier(.32,.72,0,1),opacity .45s ease}
+
+.sheet{z-index:40}
+.sheet>div.obp{padding:0;overflow:hidden;height:min(84vh,600px);max-height:92%}.obtrack{display:flex;width:200%;height:100%;transition:transform .5s cubic-bezier(.32,.72,0,1)}.obpane{width:50%;flex:none;height:100%;overflow:auto;padding:20px 16px 0;-webkit-overflow-scrolling:touch}.obpane .act{bottom:0;padding-bottom:calc(14px + env(safe-area-inset-bottom))}.sheet>div.obp>.obtrack{animation:none!important}.sheet>div.obp.morph>*:not(.ghost){animation:none!important}
+.obpane{display:flex;flex-direction:column}.obpane>*{flex:none}.obpane .act{margin-top:auto!important}
+</style>
 </head>
 <body>
 <div id="app"></div>
@@ -208,7 +233,9 @@ function home(){
   ${mineRooms?gaugeTop(mineRooms,'담당 점검률'+(S.who?' · '+esc(S.who):''),'mine'):gaugeTop(all,'전체 점검률','all')}${mineRooms?`<div class="gl"><span>전체 (3명 합산, 이 폰 기준)</span><span><b style="font-size:17px">${all.p}%</b> (${all.d}/${all.t})</span></div>`:''}</div><div class="wrap">`;
   if(!storeOk)h+=`<div class="card" style="background:#fde4e4;font-size:17px;line-height:1.5"><b>⚠ 이 브라우저는 기록을 저장하지 못해요</b><br>크롬 같은 기본 브라우저로 열어 주세요. 그전까지는 이 창을 닫지 말고, 중간중간 [엑셀 내보내기]로 받아 두세요.</div>`;
   else if(location.protocol==='file:'&&!S.tipOk)h+=`<div class="card" style="background:#fff;font-size:17px;line-height:1.5;border:2px solid var(--ink)"><b>📱 파일로 열었어요</b><br>기록은 이 폰의 브라우저에 저장돼요. 같은 파일을 같은 브라우저로 다시 열어야 이어서 쓸 수 있어요. 중간에 [임시 저장]과 [엑셀 내보내기]를 눌러 두세요.<button class="btn" style="display:block;width:100%;height:50px;border-radius:14px;background:var(--ink);color:#fff;font-size:19px;font-weight:700;margin-top:10px" data-a="tipok">확인했어요</button></div>`;
+  /* 다음에 해야 할 설정을 알려 주는 배너: 사옥 → 담당 층 순서로 이어짐 */
   if(!S.siteSet)h+=`<button class="card floor next" style="margin-bottom:14px;background:var(--lime)" data-a="pickSite"><span class="n" style="font-size:24px">🏢</span><span class="m" style="font-size:24px;font-weight:800">사옥 선택하기<small style="margin:4px 0 0">눌러서 점검할 사옥을 골라 주세요</small></span></button>`;
+  else if(S.rooms.length&&!S.mine.length)h+=`<button class="card floor next" style="margin-bottom:14px;background:var(--lime)" data-a="pickFloors"><span class="n" style="font-size:24px">🏢</span><span class="m" style="font-size:24px;font-weight:800">담당 층 선택하기<small style="margin:4px 0 0">${esc(S.site)} · 눌러서 맡은 층을 골라 주세요</small></span></button>`;
   const mainP=(mineRooms||all).p;
   if(mainP===100)h+=`<div class="final">🎉 ${mineRooms?'담당 층 ':'전체 '}점검 완료<b>${mainP}%</b>하단 [내보내기]로 파일을 만들어 주세요</div>`;
   if(S.mine.length)h+=`<div class="chips" style="margin-bottom:12px"><button class="chip ${S.onlyMine?'':'on'}" data-a="scope" data-v="0">전체 층</button><button class="chip ${S.onlyMine?'on':''}" data-a="scope" data-v="1">담당 층만</button></div>`;
@@ -255,7 +282,7 @@ function goRoom(id){const el=document.getElementById('r'+id);if(el)window.scroll
 document.addEventListener('click',e=>{
   const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,id=b.dataset.id;
   if(a==='floor'){if(view.page==='home'){view.sy=window.scrollY;history.pushState({f:1},'')}view={page:'floor',floor:+b.dataset.f};render()}
-  else if(a==='exit')setup();
+  else if(a==='exit')openSetup(1);
   else if(a==='finish')completeFloor(+b.dataset.f);
   else if(a==='back'){if(history.state&&history.state.f)history.back();else{view={page:'home'};render()}}
   else if(a==='scope'){S.onlyMine=b.dataset.v==='1';render()}
@@ -277,7 +304,8 @@ document.addEventListener('click',e=>{
   else if(a==='tempsave'){S.savedAt=Date.now();save();const t=new Date(S.savedAt),d=stat(S.rooms).d;toast('임시 저장 완료 · '+d+'/'+S.rooms.length+'실 · '+String(t.getHours()).padStart(2,'0')+':'+String(t.getMinutes()).padStart(2,'0'))}
   else if(a==='tipok'){S.tipOk=true;save();render()}
   else if(a==='menu')menu();
-  else if(a==='pickSite')pickSite();
+  else if(a==='pickSite')openSetup(1);
+  else if(a==='pickFloors')openSetup(2);
   else if(a==='addRoom')roomForm(null);
   else if(a==='editRoom')roomForm(rm(id));
   else if(a==='addFloor')addFloor();
@@ -297,16 +325,18 @@ window.addEventListener('popstate',()=>{
   if(sheetOpen){sheetOpen=false;L().innerHTML='';render();return}
   if(view.page==='floor'){view={page:'home'};render()}
 });
-function sheet(html){layerTok++;if(!sheetOpen){sheetOpen=true;history.pushState({s:1},'')}
+function sheet(html){layerTok++;const dir=window._sdir||1;window._sdir=1;if(!sheetOpen){sheetOpen=true;history.pushState({s:1},'')}
   const l=L(),old=l.querySelector('.sheet:not(.out)>div');
-  if(!old){l.innerHTML=`<div class="sheet" data-a="" onclick="if(event.target===this)closeLayer()"><div>${html}</div></div>`;return}
-  /* 같은 시트 안에서 내용이 바뀔 때: 이전 내용은 위로 사라지고 시트 높이가 스프링으로 늘어나/줄어듦 */
+  const isOb=html.includes('class="obtrack"');
+  if(!old){l.innerHTML=`<div class="sheet" data-a="" onclick="if(event.target===this)closeLayer()"><div class="${isOb?'obp':''}">${html}</div></div>`;return}
+  old.classList.toggle('obp',isOb);
+  /* 같은 시트 안에서 단계가 바뀔 때: 이전 내용은 옆으로 빠지고, 높이가 부드럽게 맞춰지며, 새 내용이 같은 방향으로 이어서 들어옴 */
   const h0=old.offsetHeight,ghost=document.createElement('div');ghost.className='ghost';ghost.innerHTML=old.innerHTML.replace(/ id="[^"]*"/g,'');
   old.innerHTML=html;old.scrollTop=0;old.style.height='auto';const h1=old.offsetHeight;
+  old.classList.add('morph');old.classList.toggle('back',dir<0);
   old.style.overflow='hidden';old.style.height=h0+'px';old.appendChild(ghost);void old.offsetHeight;
-  old.style.transition='height .55s cubic-bezier(.34,1.25,.64,1)';old.style.height=h1+'px';
-  setTimeout(()=>{ghost.remove();old.style.height='';old.style.transition='';old.style.overflow=''},580)}
-function hintWho(){}
+  old.style.transition='height .42s cubic-bezier(.32,.72,0,1)';old.style.height=h1+'px';
+  setTimeout(()=>{ghost.remove();old.style.height='';old.style.transition='';old.style.overflow=''},600)}function hintWho(){}
 
 /* ---------- 메뉴/설정 ---------- */
 const SITES=['그린팩토리','1784','빗썸금융타워','도담빌딩','테크워타워'];
@@ -334,16 +364,30 @@ function saveMenu(){S.who=document.getElementById('who').value.trim();save();clo
 function doNew(){S.rooms.forEach(r=>{r.st='';r.reason='';r.sup={};r.rep=false;r.memo='';r.by='';r.at=''});S.ym=today().slice(0,7);S.mine=[];S.onlyMine=true;save();view={page:'home'};render();setup()}
 
 /* 첫 화면 / 매달 담당 층 선택 */
-function setup(fromMenu){window._fromMenu=fromMenu;
-  const lock=!S.siteSet?'⬆ 사옥을 먼저 선택하면 구간과 담당 층을 고를 수 있어요':(!S.rooms.length?'이 사옥은 아직 회의실 정보가 없어요. 점검표 엑셀이 업로드되면 고를 수 있어요.':'');
-  sheet(`<div class="shead">${fromMenu?'<button class="sback" onclick="menu()" aria-label="설정으로"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>':''}<h2>이번 달 담당 층</h2></div>
-  <div class="g2"><div><label>이름</label><input type="text" id="who" value="${esc(S.who)}" placeholder="홍길동"></div><div><label>사옥</label>${siteChips()}</div></div>
-  ${lock?`<div class="note" id="lockmsg" style="color:var(--ink);font-weight:700">${lock}</div>`:''}
-  <div id="floorSec" class="${S.siteSet&&S.rooms.length?'':'lock'}"><label>구간으로 고르기</label>
-  <div class="g3">${groups().map((g,i)=>`<button class="chip tier" onclick="tier(${i})">${['저층','중층','고층'][i]}<br><small>${g.length?g[0]+'~'+g[g.length-1]+'층 · '+g.reduce((s,f)=>s+inF(f).length,0)+'실':'-'}</small></button>`).join('')}</div>
-  <label>담당 층 (눌러서 추가·해제)</label><div class="fgrid" id="pm">${floors().map(f=>`<button class="chip ${S.mine.includes(f)?'on':''}" onclick="this.classList.toggle('on')" data-f="${f}">${f}층</button>`).join('')}</div></div>
-  <div class="act"><button class="btn pri" onclick="saveSetup()">${fromMenu?'저장':'시작하기'}</button></div>`);
-}function groups(){
+/* 온보딩: 하단 배너(시트) 하나에 두 페이지(사옥 → 담당 층). 배너 높이는 고정, 단계는 옆으로 넘어가듯 이동 */
+const CHEV_L='<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>';
+function setup(fromMenu){openSetup(fromMenu?2:(S.siteSet&&S.rooms.length?2:1),fromMenu?'menu':'')}
+function openSetup(step,from){window._setupFrom=from||'';showSetup(step)}
+function finishSetup(){closeLayer()}
+function pickSiteCard(x,btn){if(btn)btn.classList.add('pick');setTimeout(()=>{setSite(x);showSetup(2)},170)}
+function obPane1(){return `<div class="shead"><h2>사옥 선택</h2><span class="stk">1 / 2</span></div>
+  <label>이름 (선택)</label><input type="text" id="who" value="${esc(S.who)}" placeholder="홍길동" oninput="S.who=this.value.trim()">
+  <div class="sitelist">${SITES.map(x=>`<button class="card site ${S.siteSet&&S.site===x?'on':''}" onclick="pickSiteCard('${x}',this)"><span class="sn2">${x}</span>${SITE_SEED[x]?'':'<small>회의실 정보 업로드 필요</small>'}<svg class="chev" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>`).join('')}</div>`}
+function obPane2(){
+  const hasR=S.rooms.length>0,fromMenu=window._setupFrom==='menu',back=fromMenu?'menu()':'showSetup(1)';
+  return `<div class="shead"><button class="sback" onclick="${back}" aria-label="뒤로">${CHEV_L}</button><h2>담당 층 선택</h2><span class="stk">${fromMenu?esc(S.site||''):'2 / 2 · '+esc(S.site||'')}</span></div>
+  ${hasR?`<label>구간으로 고르기</label><div class="g3">${groups().map((g,i)=>`<button class="chip tier" onclick="tier(${i})">${['저층','중층','고층'][i]}<br><small>${g.length?g[0]+'~'+g[g.length-1]+'층 · '+g.reduce((s,f)=>s+inF(f).length,0)+'실':'-'}</small></button>`).join('')}</div>
+  <label>담당 층 (눌러서 추가·해제)</label><div class="fgrid" id="pm">${floors().map(f=>`<button class="chip ${S.mine.includes(f)?'on':''}" onclick="this.classList.toggle('on')" data-f="${f}">${f}층</button>`).join('')}</div>`
+  :`<div class="note" style="color:var(--ink);font-weight:700">이 사옥은 아직 회의실 정보가 없어요. 점검표 엑셀을 업로드하면 층과 회의실이 채워져요.</div><button class="btn" style="background:var(--lime);border:2px solid var(--ink)" onclick="mergeUI()">회의실 정보 업로드</button>`}
+  <div class="act"><button class="btn pri" onclick="saveSetup()">${hasR?(fromMenu?'저장':'시작하기'):'확인'}</button></div>`}
+function showSetup(st){
+  const tr=document.querySelector('.sheet:not(.out) .obtrack');
+  if(tr){ /* 같은 배너 안에서 페이지만 넘김 */
+    const panes=tr.querySelectorAll('.obpane');if(st===2)panes[1].innerHTML=obPane2();else panes[0].innerHTML=obPane1();
+    void tr.offsetWidth;tr.style.transform=st===2?'translateX(-50%)':'translateX(0)';return}
+  sheet(`<div class="obtrack" style="transform:translateX(${st===2?'-50%':'0'})"><section class="obpane">${obPane1()}</section><section class="obpane">${obPane2()}</section></div>`);
+}
+function groups(){
   const fl=floors(),total=S.rooms.length,g=[[],[],[]];let acc=0;
   fl.forEach(f=>{const n=inF(f).length;const gi=Math.min(2,Math.floor((acc+n/2)/(total/3)));g[gi].push(f);acc+=n});return g;
 }
@@ -351,12 +395,13 @@ function tier(i){const g=groups()[i];document.querySelectorAll('#pm .chip').forE
 function saveSetup(){
   const m=[...document.querySelectorAll('#pm .chip.on')].map(b=>+b.dataset.f);
   if(!S.siteSet){toast('사옥을 선택하세요');return}
-  if(S.rooms.length&&!m.length){toast('담당 층을 하나 이상 선택하세요');return}S.who=document.getElementById('who').value.trim();S.mine=m;S.onlyMine=true;save();closeLayer();
+  if(S.rooms.length&&!m.length){toast('담당 층을 하나 이상 선택하세요');return}
+  S.mine=m;S.onlyMine=true;save();finishSetup();
 }
 
 function pickMine(){
   sheet(`<h2>담당 층 선택</h2><div class="chips" id="pm">${floors().map(f=>`<button class="chip ${S.mine.includes(f)?'on':''}" onclick="this.classList.toggle('on')" data-f="${f}">${f}층</button>`).join('')}</div>
-  <button class="btn pri" onclick="savePick()">확인</button><button class="btn" onclick="menu()">뒤로</button>`);
+  <button class="btn pri" onclick="savePick()">확인</button><button class="btn" onclick="window._sdir=-1;menu()">뒤로</button>`);
 }
 function savePick(){S.mine=[...document.querySelectorAll('#pm .chip.on')].map(b=>+b.dataset.f);S.onlyMine=S.mine.length>0;save();closeLayer()}
 
@@ -500,7 +545,7 @@ async function readRooms(buf){
 }
 function mergeUI(){
   sheet(`<h2>🧩 점검 파일 취합</h2><div class="note">다른 담당자가 내보낸 엑셀 파일을 선택하세요(여러 개 가능). 아직 점검 안 한 칸만 채워지고, 이미 점검한 칸은 유지돼요. 원본 점검표처럼 담당자별로 나뉜 파일도 읽어요.</div>
-  <input type="file" id="mf" accept=".xlsx" multiple style="width:100%;margin-top:8px"><button class="btn pri" onclick="doMerge()">취합하기</button><div id="mres"></div><button class="btn" onclick="menu()">뒤로</button>`);
+  <input type="file" id="mf" accept=".xlsx" multiple style="width:100%;margin-top:8px"><button class="btn pri" onclick="doMerge()">취합하기</button><div id="mres"></div><button class="btn" onclick="window._sdir=-1;menu()">뒤로</button>`);
 }
 async function doMerge(){
   const fs=[...document.getElementById('mf').files];if(!fs.length){toast('파일을 선택하세요');return}
